@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>External JSON File</title>
+</head>
+<body>
+    <button id="button">Load Github Users</button>
+    <br>
+    <br>
+    <h1>Github Users</h1>
+    <div id="tartalom"></div>
+
+    <script>
+        document.getElementById('button').addEventListener('click', loadJSON);
+
+        function loadJSON(){
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', 'https://api.github.com/users', true);
+
+            
+
+            xhr.onload = function(){
+                
+                if (this.status == 200) {
+                    let users = JSON.parse(this.responseText);
+                   // console.log(valtozo.name);
+                   let tartalom = '';
+                   users.forEach(user => {
+                        tartalom += '<ul style="list-style.type:none">';
+                        tartalom += `<li>ID: ${user.id}</li>`;
+                        tartalom += `<li>Login: ${user.login}</li>`;
+                        let avatar = user.avatar_url;
+                        //tartalom += `<li>Email: ${user.email}</li>`;
+                        tartalom += '</ul>';
+                   });
+                   
+                   
+                   document.getElementById('tartalom').innerHTML = tartalom;
+                }
+            };
+
+            xhr.send();
+
+        }
+        
+    </script>
+</body>
+</html>

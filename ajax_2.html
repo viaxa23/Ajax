@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="button_1">Get Json UserFile</button>
+    <button id="button_2">Get Json UserFile</button>
+
+    <div id="tartalom_1"></div>
+    <div id="tartalom_2"></div>
+
+    <script>
+        document.getElementById('button_1').addEventListener('click', loadJSON);
+        document.getElementById('button_2').addEventListener('click', loadJSONS);
+
+        function loadJSON(){
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', './user.json', true);
+
+            
+
+            xhr.onload = function(){
+                
+                if (this.status == 200) {
+                    let valtozo = JSON.parse(this.responseText);
+                   // console.log(valtozo.name);
+                   let tartalom = '<ul>';
+                   tartalom += `<li>ID: ${valtozo.id}</li>`;
+                   tartalom += `<li>Név: ${valtozo.name}</li>`;
+                   tartalom += `<li>Email: ${valtozo.mail}</li>`;
+                   tartalom += '</ul>';
+                   document.getElementById('tartalom_1').innerHTML = tartalom;
+                }
+            };
+
+            xhr.send();
+
+        }
+
+        function loadJSONS(){
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', './users.json', true);
+
+            
+
+            xhr.onload = function(){
+                
+                if (this.status == 200) {
+                    let users = JSON.parse(this.responseText);
+                   // console.log(valtozo.name);
+                    let tartalom = '';
+                   users.forEach((user) => {    
+                   
+                    tartalom += '<ul>';
+                   tartalom += `<li>ID: ${user.id}</li>`;
+                   tartalom += `<li>Név: ${user.name}</li>`;
+                   tartalom += `<li>Email: ${user.mail}</li>`;
+                   tartalom += '</ul>';
+                });
+                   document.getElementById('tartalom_2').innerHTML = tartalom;
+                }
+            };
+
+            xhr.send();
+
+        }
+    </script>
+</body>
+</html>
