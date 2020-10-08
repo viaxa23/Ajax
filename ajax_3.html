@@ -1,51 +1,65 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang='hu'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>External JSON File</title>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>AJAX 3 - External JSON File</title>
+    <style>
+        .user {
+            display: flex;
+            background-color: #4fecec;
+            padding: 20px;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 3px rgb(145, 15, 15);
+            width: 60%;
+            border-radius: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <button id="button">Load Github Users</button>
-    <br>
-    <br>
-    <h1>Github Users</h1>
-    <div id="tartalom"></div>
+    <div class='container'>
+        <button id='button'>Load Github Users</button>
+        <br />
+        <br />
+        <h1>Github users</h1>
+        <div id='tartalom'></div>
+    </div>
+    
 
     <script>
         document.getElementById('button').addEventListener('click', loadJSON);
 
-        function loadJSON(){
-            var xhr = new XMLHttpRequest();
-
+        function loadJSON() {
+            let xhr = new XMLHttpRequest();
+            // console.log(xhr);
+            
             xhr.open('GET', 'https://api.github.com/users', true);
 
-            
-
-            xhr.onload = function(){
-                
+            xhr.onload = function() {
                 if (this.status == 200) {
                     let users = JSON.parse(this.responseText);
-                   // console.log(valtozo.name);
-                   let tartalom = '';
-                   users.forEach(user => {
-                        tartalom += '<ul style="list-style.type:none">';
+                    // console.log(valtozo.name);
+                    let tartalom = '';
+                    users.forEach((user) => {
+                        tartalom += '<div class="user">';
+                        let avatar = user.avatar_url;
+                        tartalom += `<img style='width:150px' src="${avatar}" alt="kép" />`;
+                        tartalom += '<ul style="list-style-type:none;">';
                         tartalom += `<li>ID: ${user.id}</li>`;
                         tartalom += `<li>Login: ${user.login}</li>`;
-                        let avatar = user.avatar_url;
-                        //tartalom += `<li>Email: ${user.email}</li>`;
                         tartalom += '</ul>';
-                   });
-                   
-                   
-                   document.getElementById('tartalom').innerHTML = tartalom;
+                        tartalom += '</div>';
+                    });
+                    document.getElementById('tartalom').innerHTML = tartalom;
                 }
             };
 
             xhr.send();
-
         }
-        
     </script>
 </body>
 </html>
